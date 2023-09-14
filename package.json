@@ -1,0 +1,27 @@
+{
+  "name": "aliceblue",
+  "version": "1.0.0",
+  "description": "An JS SDK for Alice Blue API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kalilinux-png/aliceBlue.git"
+  },
+  "keywords": [
+    "aliceblue",
+    "broker",
+    "stockmarket",
+    "trading",
+    "sdk",
+    "js"
+  ],
+  "author": "Shubham Yadav",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kalilinux-png/aliceBlue/issues"
+  },
+  "homepage": "https://github.com/kalilinux-png/aliceBlue#readme"
+}
