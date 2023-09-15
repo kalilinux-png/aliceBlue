@@ -1,8 +1,8 @@
 {
-  "name": "aliceblue",
+  "name": "@kalilinuxuser5/aliceblue",
   "version": "1.0.0",
   "description": "An JS SDK for Alice Blue API",
-  "main": "index.js",
+  "main": "./src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -29,5 +29,6 @@
     "websocket": "^1.0.34",
     "winston": "^3.10.0",
     "ws": "^8.14.1"
-  }
+  },
+  "devDependencies": {}
 }
