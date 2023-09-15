@@ -26,6 +26,7 @@
   "homepage": "https://github.com/kalilinux-png/aliceBlue#readme",
   "dependencies": {
     "dotenv": "^16.3.1",
+    "websocket": "^1.0.34",
     "winston": "^3.10.0",
     "ws": "^8.14.1"
   }

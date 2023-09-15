@@ -13,6 +13,7 @@ print("user Id",userId)
 api_key =  os.getenv('API_KEY')
 alice = Aliceblue(user_id=userId,api_key=api_key)
 print(alice.get_session_id()) # Get Session ID
+print(alice.place_order())
 LTP = 0
 socket_opened = False
 subscribe_flag = False
