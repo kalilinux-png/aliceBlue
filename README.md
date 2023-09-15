@@ -2,15 +2,22 @@
 
 A JS SDK for Alice Blue API
 
-
 * Create a .env file which include API_KEY and USERID in it , which are further required for Alice Blue API Access, To Get the api key login to alice blue dashboard [Click Here](https://ant.aliceblueonline.com/apps "Alice Blue Login")
 
-    2. follow this step's after getting the api key and userid your .env file should look like this  👇
+  2. follow this step's after getting the api key and userid your .env file should look like this  👇
 
 ![1694797817983](image/README/1694797817983.png)
 
+3. import your api key and user id in the root file also don't forget to import our Alice Class you can do that by
 
-3. import your api key and user id in the root file also don't forget to import our Alice Class
+   ```bash
+   npm i @kalilinuxuser5/aliceblue
+   ```
+
+   ```bash
+
+
+
    ```javascript
    const Alice = require("@kalilinuxuser5/aliceblue/src/aliceBase")
    require('dotenv').config()
@@ -18,7 +25,7 @@ A JS SDK for Alice Blue API
    let userId = process.env.USERID
    ```
 
-    or you can use it directly
+   or you can use it directly
 
 ```javascript
 const Alice = require("@kalilinuxuser5/aliceblue/src/aliceBase")
@@ -38,14 +45,13 @@ main()
 
 ```
 
-alice.apiEncryptionKey() 
+alice.apiEncryptionKey()
 
 The Above Method is used to get encryption key from alice server
 
 alice.getSessionId ()
 
-This Above Method is required for getting Session token from alice server which are further required for all authorized endpoint 
-
+This Above Method is required for getting Session token from alice server which are further required for all authorized endpoint
 
 ```javascript
 
@@ -101,14 +107,12 @@ what's next after this 🤔
 
 don't worry , we are working on it for adding more better support and better features in near future , Stay Tuned For More Updates 😎⭐
 
-
 Fell Free To Contact me 🤙 👇
 
-
-[Website ](https://shubhyadav.tech "Website")
+[Website](https://shubhyadav.tech "Website")
 
 [LinkedIn](https://www.linkedin.com/in/shubhsinghyadav/ "LinkedIn")
 
 [Medium](https://medium.com/@kalilinuxuser5 "Medium")
 
-[Instagram ](https://www.instagram.com/shubham.yadav_5/ "Instagram")
+[Instagram](https://www.instagram.com/shubham.yadav_5/ "Instagram")
