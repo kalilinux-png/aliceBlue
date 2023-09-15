@@ -7,7 +7,7 @@ const { generateHash } = require("./utils")
 const { fetchRequest } = require("./networkApi")
 const logger = require("./logger");
 const { log } = require("winston");
-const WebSocket = require('ws');
+const WebSocket = require('websocket').w3cwebsocket;
 
 
 // Purpose: To get the access token for the user
@@ -65,9 +65,49 @@ class Alice {
 
     // ORDER MANAGEMENT SECTION
 
-    async placeOrder(trading_symbol, exch, transtype, ret, prctyp, qty, symbol_id, price, trigPrice, pCode, complexty, orderTag) {
-        return { "error": "Not Implemented" }
+    async placeOrder(trading_symbol = "ASHOKLEY-EQ", exch = "NSE", transtype = "BUY", ret = 'DAY', prctyp = "M", qty = 1, symbol_id = "212", price = "0", trigPrice = "00.00", pCode = "MIS", complexty = 'regular', order_tag = 'Kred Konnect', discqty = '0', stop_loss = null, square_off = null, trailing_sl = null) {
+        // Place an order for the user
+        let data = [{
+            'complexty': complexty,
+            'discqty': discqty,
+            'exch': exch,
+            'pCode': pCode,
+            'price': price,
+            'prctyp': prctyp,
+            'qty': qty,
+            'ret': ret,
+            'symbol_id': symbol_id,
+            'trading_symbol': trading_symbol,
+            'transtype': transtype,
+            "stopLoss": stop_loss,
+            "target": square_off,
+            "trailing_stop_loss": trailing_sl,
+            "trigPrice": trigPrice,
+            "orderTag": order_tag
+        }]
+        let response = await fetchRequest(constant.PLACEORDER, "POST", data, this.headers)
+        return response
+    }
 
+    async squareOff(exchangeSegment = constant.NSE, pCode = constant.MIS, netQty = 1, tockenNo = 212, symbol = "ASHOKLEY") {
+        // To Place Square Off Order
+        // let data = [{
+        //     "exchSeg": exchangeSegment,
+        //     "pCode": pCode,
+        //     "netQty": netQty,
+        //     "tockenNo": tockenNo,
+        //     "symbol": symbol
+        // }]
+        let data = [{
+            "exchSeg": "nse_cm",
+            "pCode": "MIS",
+            "netQty": "0",
+            "tockenNo": "212",
+            "symbol": "ASHOKLEY"
+        }]
+        log("data", data)
+        let response = await fetchRequest(constant.SQUAREOFFPOSITION, "POST", data, this.headers)
+        return response
     }
 
     async getFunds() {
@@ -96,7 +136,9 @@ class Alice {
 
     async WebSocket() {
         // Get the websocket session for the user
+
         const wSocket = new WebSocket(constant.WEBSOCKET);
+
         if (this.SESSION_TOKEN) {
             logger.info("Invalidating Old Session...", this.SESSION_TOKEN)
             let response = await this.invalidateSession()
@@ -114,25 +156,107 @@ class Alice {
             "source": "API"
         }
         logger.info(data)
-        wSocket.onopen = (event) => {
+
+        wSocket.onopen = function () {
+            console.log("On Open")
             wSocket.send(JSON.stringify(data));
-            wSocket.send({ "k": "NFO|54957#MCX|239484", "t": "t" });
-            log("On Open", event.message)
+            wSocket.send(JSON.stringify({ "k": "NFO|54957#MCX|239484", "t": "t" }));
         }
-        wSocket.onmessage = (event) => {
+        wSocket.onmessage = function (event) {
             console.log("On Message", event.message)
         }
-        wSocket.onerror = (event) => {
+        wSocket.onerror = function (event) {
             console.log("On Error", event.message)
         }
-        wSocket.onclose = (event) => {
-            console.log("On Close", event.data)
+        wSocket.onclose = function (event) {
+            console.log("On Close", event.message)
         }
+
         return wSocket
 
     }
 
+    async searchScrip(searchString) {
+        // To Search Scrip 
+        let data = {
+            "symbol": searchString,
+            exchange: ["All", "NSE", "BSE", "CDS", "MCX", "NFO"]
+        }
+        let response = await fetchRequest(constant.SEARCHSCRIP, "POST", data, this.headers)
+    }
 
+    async watchList() {
+
+        let response = await fetchRequest(constant.WATCHLIST, "GET", null, this.headers)
+        return response
+
+
+    }
+
+    async orderBook() {
+        // To Get Order Book  
+        let response = await fetchRequest(constant.ORDERBOOK, "GET", null, this.headers)
+        return response
+    }
+
+    async tradeBook() {
+        // To Get Trade Book
+        let response = await fetchRequest(constant.TRADEBOOK, "GET", null, this.headers)
+        return response
+    }
+
+    async exitBracketOrder(nestOrderNumber, symbolOrderId, status) {
+        // To Exit Bracket Order
+        let data = {
+            "nestOrderNumber": nestOrderNumber,
+            "symbolOrderId": symbolOrderId,
+            "status": status
+        }
+        let response = await fetchRequest(constant.EXITBRACKETORDER, "POST", data, this.headers)
+        return response
+    }
+
+    async modifyOrder(transtype = constant.BUY, discqty = 0, exch = constant.NSE, trading_symbol = "ASHOKLEY-EQ", nestOrderNumber = 1234, prctyp = constant.MARKET, price = 0, qty = 1, trigPrice = 0, filledQuantity = 0, pCode = constant.MIS) {
+        // To Modify Order
+        let data = {
+            "transtype": transtype,
+            "discqty": discqty,
+            "exch": exch,
+            "trading_symbol": trading_symbol,
+            "nestOrderNumber": nestOrderNumber,
+            "prctyp": prctyp,
+            "price": price,
+            "qty": qty,
+            "trading_symbol": trading_symbol,
+            "trigPrice": trigPrice,
+            "filledQuantity": filledQuantity
+        }
+
+        let response = await fetchRequest(constant.MODIFYORDER, "POST", data, this.headers)
+        return response
+
+    }
+
+    async cancelOrder(nestOrderNumber, exch = constant.NSE, trading_symbol = "ASHOKLEY-EQ") {
+        // To Cancel Order
+        let data = {
+            "exch": exch,
+            "nestOrderNumber": nestOrderNumber,
+            "trading_symbol": trading_symbol
+        }
+        let response = await fetchRequest(constant.CANCELORDER, "POST", data, this.headers)
+        return response
+
+    }
+
+    async orderHistory(nestOrderNumber) {
+        let data = {
+            "nestOrderNumber": nestOrderNumber
+        }
+        let response = fetchRequest(constant.ORDERHISTORY, "POST", data, this.headers)
+        return response
+
+    }
 }
 
 

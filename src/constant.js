@@ -37,6 +37,9 @@ exports.CREATESESSION = CREATESESSION = BASE_URL + "/ws/createWsSession"
 exports.INVALIDATE_SESSION = INVALIDATE_SESSION = BASE_URL + "/ws/invalidateSocketSess"
 exports.WEBSOCKET = WEBSOCKET = "wss://ws1.aliceblueonline.com/NorenWS"
 
+
+exports.SEARCHSCRIP = SEARCHSCRIP = BASE_URL + "/exchange/getScripForSearch"
+exports.WATCHLIST = WATCHLIST = BASE_URL + "marketWatch/fetchMWList"
 // Transaction Types
 exports.BUY = BUY = "B"
 exports.SELL = SELL = "S"

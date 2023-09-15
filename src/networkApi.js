@@ -9,15 +9,16 @@ exports.fetchRequest = async function fetchRequest(url, method, body, headers = 
         redirect: 'follow',
 
     }
+    let response = null
     try {
 
-        let response = await fetch(url, options)
+        response = await fetch(url, options)
         logger.log("debug", `URL : ${url} METHOD : ${method} STATUS : ${response.status} STATUS TEXT : ${response.statusText}`)
         response = await response.json()
         return response
     }
     catch (err) {
-        logger.error(`ERROR IN NETWORK REQUEST URL : ${url} METHOD : ${method} `, err)
+        logger.error(`ERROR IN NETWORK REQUEST URL : ${url} METHOD : ${method} ${response.statusText} `, err)
         return { error: true, message: err.message }
     }
 
