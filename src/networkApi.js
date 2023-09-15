@@ -1,4 +1,4 @@
-// Purpose: Network API for fetching data from the server
+const logger = require("./logger");// Purpose: Network API for fetching data from the server
 
 exports.fetchRequest = async function fetchRequest(url, method, body, headers = {}) {
     // fetchRequest for get,post request to aliceblue api
@@ -12,11 +12,12 @@ exports.fetchRequest = async function fetchRequest(url, method, body, headers = 
     try {
 
         let response = await fetch(url, options)
+        logger.log("debug", `URL : ${url} METHOD : ${method} STATUS : ${response.status} STATUS TEXT : ${response.statusText}`)
         response = await response.json()
         return response
     }
     catch (err) {
-        console.error(`ERROR IN NETWORK REQUEST URL : ${url} METHOD : ${method} `, err)
+        logger.error(`ERROR IN NETWORK REQUEST URL : ${url} METHOD : ${method} `, err)
         return { error: true, message: err.message }
     }
 

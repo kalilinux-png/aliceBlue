@@ -3,6 +3,7 @@
 exports.BASE_URL = BASE_URL = "https://ant.aliceblueonline.com/rest/AliceBlueAPIService/api"
 exports.CONTRACT_URL = CONTRACT_URL = "https://v2api.aliceblueonline.com/restpy/contract_master" // QUERY PARAMS: exchange
 exports.APIENCRYPTIONKEY = APIENCRYPTIONKEY = BASE_URL + "/customer/getAPIEncpkey"
+exports.SESSIONID = SESSIONID = BASE_URL + "/customer/getUserSID"
 
 // PORTFOLIO SECTION 
 exports.POSITIONBOOK = POSITIONBOOK = BASE_URL + "/positionAndHoldings/positionBook"
