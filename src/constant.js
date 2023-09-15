@@ -34,6 +34,7 @@ exports.HISTORY = HISTORY = BASE_URL + "/chart/history"
 // WEBSOCKET SECTION 
 // CREATE WS SESSION FOR VENDORS
 exports.CREATESESSION = CREATESESSION = BASE_URL + "/ws/createWsSession"
+exports.INVALIDATE_SESSION = INVALIDATE_SESSION = BASE_URL + "/ws/invalidateSocketSess"
 exports.WEBSOCKET = WEBSOCKET = "wss://ws1.aliceblueonline.com/NorenWS"
 
 // Transaction Types

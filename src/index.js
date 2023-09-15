@@ -1,10 +1,9 @@
 const Alice = require("./aliceBase");
+
 require('dotenv').config()
 log = console.log
 
 const main = async () => {
-    log("env ",process.env.USERID, process.env.API_KEY)
-    return 
     let alice = new Alice(process.env.USERID, process.env.API_KEY)
     console.log(alice)
     let encryptionKey = await alice.apiEncryptionKey()
@@ -21,6 +20,9 @@ const main = async () => {
     log("Funds", profile)
     let wsSession = await alice.getWSSession()
     log("Ws Session", wsSession)
+    let wSocket = await alice.WebSocket()
+    // log("Ws Socket", wSocket)
+
 }
 
 main()

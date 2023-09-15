@@ -7,6 +7,7 @@ const { generateHash } = require("./utils")
 const { fetchRequest } = require("./networkApi")
 const logger = require("./logger");
 const { log } = require("winston");
+const WebSocket = require('ws');
 
 
 // Purpose: To get the access token for the user
@@ -81,6 +82,12 @@ class Alice {
         return response
     }
 
+    async invalidateSession() {
+        // Invalidate the session of the user for the web socket
+        let response = await fetchRequest(constant.INVALIDATE_SESSION, "POST", { "loginType": "API" }, this.headers)
+        return response
+
+    }
     async getWSSession() {
         // Get the websocket session for the user
         let response = await fetchRequest(constant.CREATESESSION, "POST", { "loginType": "API" }, this.headers)
@@ -90,9 +97,38 @@ class Alice {
     async WebSocket() {
         // Get the websocket session for the user
         const wSocket = new WebSocket(constant.WEBSOCKET);
-        wSocket.onopen = function (event) {
-            wSocket.send({})
+        if (this.SESSION_TOKEN) {
+            logger.info("Invalidating Old Session...", this.SESSION_TOKEN)
+            let response = await this.invalidateSession()
+            logger.info(`Session Invalidated  ${response.stat}`)
+            response = await this.getWSSession()
+            logger.info(`Session Created  ${response.stat}`)
+
         }
+        let enc_string = await generateHash(await generateHash(this.SESSION_TOKEN))
+        let data = {
+            "susertoken": enc_string,
+            "t": "c",
+            "actid": this.USERID + "_API",
+            'uid': this.USERID + "_API",
+            "source": "API"
+        }
+        logger.info(data)
+        wSocket.onopen = (event) => {
+            wSocket.send(JSON.stringify(data));
+            wSocket.send({ "k": "NFO|54957#MCX|239484", "t": "t" });
+            log("On Open", event.message)
+        }
+        wSocket.onmessage = (event) => {
+            console.log("On Message", event.message)
+        }
+        wSocket.onerror = (event) => {
+            console.log("On Error", event.message)
+        }
+        wSocket.onclose = (event) => {
+            console.log("On Close", event.data)
+        }
+        return wSocket
 
     }
 
