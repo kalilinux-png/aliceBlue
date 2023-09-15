@@ -1,6 +1,6 @@
 {
   "name": "@kalilinuxuser5/aliceblue",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An JS SDK for Alice Blue API",
   "main": "./src/index.js",
   "scripts": {
